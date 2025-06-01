@@ -16,11 +16,7 @@ interface Props {
 
 export default function SortSelect({ value, onChange }: Props) {
   return (
-    <select
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className="border px-3 py-2 rounded w-full md:w-64"
-    >
+    <select value={value} onChange={(e) => onChange(e.target.value)} className="border px-3 py-2 rounded w-full md:w-64">
       <option value="">Ordenar por</option>
       {sortOptions.map((opt) => (
         <option key={opt.value} value={opt.value}>

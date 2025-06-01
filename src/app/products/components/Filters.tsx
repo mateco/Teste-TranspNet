@@ -23,19 +23,9 @@ export default function Filters({
 }: Props) {
   return (
     <>
-      <input
-        type="text"
-        placeholder="Buscar por nome..."
-        value={search}
-        onChange={(e) => onSearchChange(e.target.value)}
-        className="border px-3 py-2 rounded w-full md:w-64"
-      />
+      <input type="text" placeholder="Buscar por nome..." value={search} onChange={(e) => onSearchChange(e.target.value)} className="border px-3 py-2 rounded w-full md:w-64"/>
 
-      <select
-        value={selectedCategory}
-        onChange={(e) => onCategoryChange(e.target.value)}
-        className="border px-3 py-2 rounded w-full md:w-64"
-      >
+      <select value={selectedCategory} onChange={(e) => onCategoryChange(e.target.value)} className="border px-3 py-2 rounded w-full md:w-64">
         <option value="">Todas categorias</option>
         {categories.map((cat) => (
           <option key={cat.slug} value={cat.slug}>

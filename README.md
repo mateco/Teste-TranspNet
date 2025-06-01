@@ -1,36 +1,123 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Teste Técnico - Desenvolvedor Front-End (TranspNet)
 
-## Getting Started
+Este projeto foi desenvolvido como parte do processo seletivo para a vaga de Desenvolvedor Front-End na **TranspNet**, conforme instruções fornecidas por **Hosana Nicolli**.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Requisitos Funcionais
+
+A aplicação web consome dados da API pública [DummyJSON](https://dummyjson.com/products) e implementa:
+
+1. **Listagem de produtos** em forma de tabela com:
+   - Nome
+   - Categoria
+   - Preço
+   - Estoque
+   - Etiquetas (*ver nota abaixo*)
+2. **Busca** por nome do produto
+3. **Filtro** por categoria
+4. **Ordenação** (asc/desc) por nome, estoque ou preço
+5. **Paginação** com 10 itens por página
+6. **Feedbacks** de carregamento e erro (UX)
+
+> **Nota:** A API [DummyJSON](https://dummyjson.com/products) **não retorna nativamente o campo `tags` (etiquetas)**. Para cumprir os requisitos da prova, o projeto simula ou deixa a coluna preparada, demonstrando a estrutura e possibilidade de expansão.
+
+---
+
+## Tecnologias Utilizadas
+
+- [Next.js](https://nextjs.org/) com App Router
+- [TypeScript](https://www.typescriptlang.org/)
+- React Hooks (`useState`, `useEffect`)
+- TailwindCSS
+- API pública: [DummyJSON](https://dummyjson.com/)
+
+---
+
+## Organização do Projeto
+
+```
+src/
+├── app/
+│   └── products/
+│       ├── components/
+│       │   ├── Filters.tsx         // Campo de busca e seleção de categoria
+│       │   ├── SortSelect.tsx      // Select para ordenação (nome, estoque, preço)
+│       │   └── ProductTable.tsx    // Renderiza a tabela dos produtos
+│       └── page.tsx                // Componente principal: integra filtros, busca, ordenação e paginação
+├── types/
+│   └── product.ts                  // Tipagem TypeScript para produtos e categorias
+├── globals.css                     // Estilos globais com Tailwind
+└── layout.tsx                      // Layout raiz com fontes e estrutura HTML padrão
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Como cada arquivo funciona
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### `page.tsx`
+Componente principal da página de produtos:
+- Gerencia **estado global** (produtos, categorias, filtros, ordenação, paginação)
+- Usa `useEffect` para buscar dados da API
+- Monta a interface com:
+  - `<Filters />` (busca e categorias)
+  - `<SortSelect />` (ordenador)
+  - `<ProductTable />` (tabela)
+  - Botões de **paginação** e mensagens de erro
 
-## Learn More
+### `Filters.tsx`
+- Campo de input para busca (`search`)
+- Dropdown de categorias (`category`)
+- Recebe props do componente pai (`page.tsx`) e emite mudanças via callbacks
 
-To learn more about Next.js, take a look at the following resources:
+### `SortSelect.tsx`
+- Dropdown de ordenação (`asc/desc`) com base no campo (nome, estoque, preço)
+- Também emite mudanças via prop `onChange`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### `ProductTable.tsx`
+- Renderiza tabela com os produtos recebidos por props
+- Mostra **estado de carregamento** e mensagem quando não há produtos
+- Organiza colunas: Nome, Categoria, Preço, Estoque
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### `product.ts`
+- Define interfaces `Product` e `Category`
+- Tipagens reutilizadas em todos os componentes com segurança e clareza
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Diferenciais Implementados
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Componentes reaproveitáveis e bem separados
+- Tratamento de erros com UX amigável
+- Suporte a estado de carregamento
+- Design responsivo (mobile/desktop)
+- Header e footer fixos no mobile
+- Download dos requisitos (PDF) no rodapé
+
+---
+
+## Como Rodar Localmente
+
+1. **Clone o repositório:**
+```bash
+git clone https://github.com/seu-usuario/teste-transpnet.git
+cd teste-transpnet
+```
+
+2. **Instale as dependências:**
+```bash
+npm install
+```
+
+3. **Inicie o servidor de desenvolvimento:**
+```bash
+npm run dev
+```
+
+4. Acesse: [http://localhost:3000/products](http://localhost:3000/products)
+
+---
+
+## Observações Finais
+
+Este projeto foi desenvolvido com foco em clareza de código, responsividade, e experiência do usuário. A estrutura modular visa facilitar futuras extensões, como filtros adicionais.

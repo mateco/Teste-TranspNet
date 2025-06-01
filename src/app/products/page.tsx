@@ -104,11 +104,7 @@ return (
       {/* Header fixo */}
       <div className="fixed top-0 left-0 w-full bg-black border-b border-gray-700 z-50 py-6 flex justify-center">
         <div className="flex items-center gap-4 flex-col md:flex-row">
-          <img
-            src="/logo.png"
-            alt="TranspNet Logo"
-            className="w-32 h-32 md:w-16 md:h-16 object-contain"
-          />
+          <img src="/logo.png" alt="TranspNet Logo" className="w-32 h-32 md:w-16 md:h-16 object-contain"/>
           <h1 className="text-2xl md:text-4xl font-bold hidden md:block">Teste Frontend</h1>
         </div>
       </div>
@@ -124,13 +120,7 @@ return (
 
       {/* Filtros */}
       <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-6">
-        <Filters
-          search={search}
-          onSearchChange={setSearch}
-          selectedCategory={selectedCategory}
-          categories={categories}
-          onCategoryChange={setSelectedCategory}
-        />
+        <Filters search={search} onSearchChange={setSearch} selectedCategory={selectedCategory} categories={categories} onCategoryChange={setSelectedCategory} />
         <SortSelect value={sort} onChange={handleSort} />
       </div>
 
@@ -146,18 +136,11 @@ return (
 
       {/* Paginação */}
       <div className="flex justify-center mt-6 gap-4">
-        <button
-          disabled={page === 1}
-          onClick={() => setPage(page - 1)}
-          className="bg-gray-200 px-4 py-2 rounded disabled:opacity-50 text-black"
-        >
+        <button disabled={page === 1} onClick={() => setPage(page - 1)} className="bg-gray-200 px-4 py-2 rounded disabled:opacity-50 text-black">
           Anterior
         </button>
         <span className="text-white">Página {page}</span>
-        <button
-          onClick={() => setPage(page + 1)}
-          className="bg-gray-200 px-4 py-2 rounded text-black"
-        >
+        <button onClick={() => setPage(page + 1)} className="bg-gray-200 px-4 py-2 rounded text-black">
           Próxima
         </button>
       </div>
@@ -167,12 +150,7 @@ return (
     <footer className="border-t border-gray-700 text-center text-sm text-white bg-black
       fixed bottom-0 left-0 w-full z-50 py-4
       md:relative md:mt-10">
-      <a
-        href="/TesteFrontEnd.pdf"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block hover:underline"
-      >
+      <a href="/TesteFrontEnd.pdf" target="_blank" rel="noopener noreferrer" className="block hover:underline">
         Ver requisitos técnicos
       </a>
     </footer>
