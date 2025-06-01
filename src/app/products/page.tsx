@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import { Product, Category } from '@/types/product'
-import Filters from '@/app/products/components/Filters'
-import SortSelect from '@/app/products/components/SortSelect'
-import ProductTable from '@/app/products/components/ProductTable'
+import Filters from './components/Filters'
+import SortSelect from './components/SortSelect'
+import ProductTable from './components/ProductTable'
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([])
@@ -57,16 +57,14 @@ export default function ProductsPage() {
         if (!res.ok) throw new Error('Erro ao carregar categorias.')
         const data = await res.json()
 
-        const formatted: Category[] = (Array.isArray(data) ? data : []).map((cat: any) => {
-          if (typeof cat === 'string') {
-            return {
-              slug: cat,
-              name: cat.charAt(0).toUpperCase() + cat.slice(1),
-              url: `/products/category/${cat}`,
-            }
-          }
-          return cat
-        })
+const formatted: Category[] = (Array.isArray(data) ? data : [])
+  .filter((cat): cat is string => typeof cat === 'string')
+  .map((cat) => ({
+    slug: cat,
+    name: cat.charAt(0).toUpperCase() + cat.slice(1),
+    url: `/products/category/${cat}`,
+  }))
+
 
         setCategories(formatted)
       } catch (error: any) {
@@ -98,62 +96,47 @@ export default function ProductsPage() {
     setProducts(sorted)
   }
 
-return (
-  <>
-    <div className="w-full max-w-7xl mx-auto px-4 pt-64 md:pt-48">
-      {/* Header fixo */}
-      <div className="fixed top-0 left-0 w-full bg-black border-b border-gray-700 z-50 py-6 flex justify-center">
-        <div className="flex items-center gap-4 flex-col md:flex-row">
-          <img src="/logo.png" alt="TranspNet Logo" className="w-32 h-32 md:w-16 md:h-16 object-contain"/>
-          <h1 className="text-2xl md:text-4xl font-bold hidden md:block">Teste Frontend</h1>
-        </div>
-      </div>
-
-      {/* Erros categorias */}
-      {errorCategories && (
-        <p className="text-red-600 mb-4">⚠️ {errorCategories}</p>
-      )}
+  return (
+<div className="flex flex-col">
+      {errorCategories && <p className="text-red-600 mb-4">⚠️ {errorCategories}</p>}
 
       <div className="flex justify-center mb-6">
         <h5 className="text-xl md:text-2xl font-bold text-center">Filtro de Produtos</h5>
       </div>
 
-      {/* Filtros */}
       <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-6">
-        <Filters search={search} onSearchChange={setSearch} selectedCategory={selectedCategory} categories={categories} onCategoryChange={setSelectedCategory} />
+        <Filters
+          search={search}
+          onSearchChange={setSearch}
+          selectedCategory={selectedCategory}
+          categories={categories}
+          onCategoryChange={setSelectedCategory}
+        />
         <SortSelect value={sort} onChange={handleSort} />
       </div>
 
-      {/* Erros produtos */}
-      {errorProducts && (
-        <p className="text-red-600 mb-4">⚠️ {errorProducts}</p>
-      )}
+      {errorProducts && <p className="text-red-600 mb-4">⚠️ {errorProducts}</p>}
 
-      {/* Tabela */}
       <div className="overflow-x-auto">
         <ProductTable products={products} loading={loading} />
       </div>
 
-      {/* Paginação */}
       <div className="flex justify-center mt-6 gap-4">
-        <button disabled={page === 1} onClick={() => setPage(page - 1)} className="bg-gray-200 px-4 py-2 rounded disabled:opacity-50 text-black">
+        <button
+          disabled={page === 1}
+          onClick={() => setPage(page - 1)}
+          className="bg-gray-200 px-4 py-2 rounded disabled:opacity-50 text-black"
+        >
           Anterior
         </button>
         <span className="text-white">Página {page}</span>
-        <button onClick={() => setPage(page + 1)} className="bg-gray-200 px-4 py-2 rounded text-black">
+        <button
+          onClick={() => setPage(page + 1)}
+          className="bg-gray-200 px-4 py-2 rounded text-black"
+        >
           Próxima
         </button>
       </div>
     </div>
-
-    {/* Footer */}
-    <footer className="border-t border-gray-700 text-center text-sm text-white bg-black
-      fixed bottom-0 left-0 w-full z-50 py-4
-      md:relative md:mt-10">
-      <a href="/TesteFrontEnd.pdf" target="_blank" rel="noopener noreferrer" className="block hover:underline">
-        Ver requisitos técnicos
-      </a>
-    </footer>
-  </>
-)
+  )
 }
