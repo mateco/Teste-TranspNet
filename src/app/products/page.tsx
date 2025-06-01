@@ -15,11 +15,15 @@ export default function ProductsPage() {
   const [sort, setSort] = useState('')
   const [page, setPage] = useState(1)
 
+  const [errorProducts, setErrorProducts] = useState('')
+  const [errorCategories, setErrorCategories] = useState('')
+
   const limit = 10
 
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true)
+      setErrorProducts('')
       const skip = (page - 1) * limit
 
       let url = `https://dummyjson.com/products?limit=${limit}&skip=${skip}`
@@ -30,25 +34,50 @@ export default function ProductsPage() {
         url = `https://dummyjson.com/products/category/${selectedCategory}?limit=${limit}&skip=${skip}`
       }
 
-      const res = await fetch(url)
-      const data = await res.json()
-      setProducts(data.products || [])
-      setLoading(false)
+      try {
+        const res = await fetch(url)
+        if (!res.ok) throw new Error('Erro ao carregar produtos.')
+        const data = await res.json()
+        setProducts(data.products || [])
+      } catch (error: any) {
+        setErrorProducts(error.message || 'Erro inesperado ao buscar produtos.')
+        setProducts([])
+      } finally {
+        setLoading(false)
+      }
     }
 
     fetchProducts()
   }, [search, selectedCategory, page])
 
-useEffect(() => {
-  const fetchCategories = async () => {
-    const res = await fetch('https://dummyjson.com/products/categories')
-    const data = await res.json()
-    setCategories(data) // agora data é um array de objetos com slug e name
-  }
+  useEffect(() => {
+    const fetchCategories = async () => {
+      setErrorCategories('')
+      try {
+        const res = await fetch('https://dummyjson.com/products/categories')
+        if (!res.ok) throw new Error('Erro ao carregar categorias.')
+        const data = await res.json()
 
-  fetchCategories()
-}, [])
+        const formatted: Category[] = (Array.isArray(data) ? data : []).map((cat: any) => {
+          if (typeof cat === 'string') {
+            return {
+              slug: cat,
+              name: cat.charAt(0).toUpperCase() + cat.slice(1),
+              url: `/products/category/${cat}`,
+            }
+          }
+          return cat
+        })
 
+        setCategories(formatted)
+      } catch (error: any) {
+        setErrorCategories(error.message || 'Erro inesperado ao buscar categorias.')
+        setCategories([])
+      }
+    }
+
+    fetchCategories()
+  }, [])
 
   const handleSort = (value: string) => {
     setSort(value)
@@ -74,6 +103,10 @@ useEffect(() => {
     <div className="p-8">
       <h1 className="text-3xl font-bold mb-4">Produtos</h1>
 
+      {errorCategories && (
+        <p className="text-red-600 mb-4">⚠️ {errorCategories}</p>
+      )}
+
       <div className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-6">
         <Filters
           search={search}
@@ -84,6 +117,10 @@ useEffect(() => {
         />
         <SortSelect value={sort} onChange={handleSort} />
       </div>
+
+      {errorProducts && (
+        <p className="text-red-600 mb-4">⚠️ {errorProducts}</p>
+      )}
 
       <ProductTable products={products} loading={loading} />
 
