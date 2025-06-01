@@ -29,8 +29,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} bg-black text-white antialiased flex flex-col min-h-screen`}>
         <Header />
 
-        {/* O conteúdo ocupa o espaço restante e empurra o footer para o fim */}
-        <main className="flex-1 w-full max-w-7xl mx-auto px-4 md:px-16 pt-64 md:pt-48">
+        <main className="flex-1 w-full max-w-7xl mx-auto px-4 md:px-16 pt-64 md:pt-48 pb-20">
           {children}
         </main>
 
