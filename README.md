@@ -36,20 +36,17 @@ A aplicação web consome dados da API pública [DummyJSON](https://dummyjson.co
 
 ## Organização do Projeto
 
-```
 src/
 ├── app/
+│   ├── layout.tsx
 │   └── products/
-│       ├── components/
-│       │   ├── Filters.tsx         // Campo de busca e seleção de categoria
-│       │   ├── SortSelect.tsx      // Select para ordenação (nome, estoque, preço)
-│       │   └── ProductTable.tsx    // Renderiza a tabela dos produtos
-│       └── page.tsx                // Componente principal: integra filtros, busca, ordenação e paginação
-├── types/
-│   └── product.ts                  // Tipagem TypeScript para produtos e categorias
-├── globals.css                     // Estilos globais com Tailwind
-└── layout.tsx                      // Layout raiz com fontes e estrutura HTML padrão
-```
+│       ├── page.tsx
+│       └── components/
+│           ├── Filters.tsx
+│           ├── SortSelect.tsx
+│           ├── ProductTable.tsx
+│           ├── Header.tsx
+│           └── Footer.tsx
 
 ---
 
