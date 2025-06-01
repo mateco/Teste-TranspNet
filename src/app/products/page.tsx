@@ -14,7 +14,6 @@ export default function ProductsPage() {
   const [search, setSearch] = useState('')
   const [sort, setSort] = useState('')
   const [page, setPage] = useState(1)
-
   const [errorProducts, setErrorProducts] = useState('')
   const [errorCategories, setErrorCategories] = useState('')
 
@@ -99,15 +98,32 @@ export default function ProductsPage() {
     setProducts(sorted)
   }
 
-  return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold mb-4">Produtos</h1>
+return (
+  <>
+    <div className="w-full max-w-7xl mx-auto px-4 pt-64 md:pt-48">
+      {/* Header fixo */}
+      <div className="fixed top-0 left-0 w-full bg-black border-b border-gray-700 z-50 py-6 flex justify-center">
+        <div className="flex items-center gap-4 flex-col md:flex-row">
+          <img
+            src="/logo.png"
+            alt="TranspNet Logo"
+            className="w-32 h-32 md:w-16 md:h-16 object-contain"
+          />
+          <h1 className="text-2xl md:text-4xl font-bold hidden md:block">Teste Frontend</h1>
+        </div>
+      </div>
 
+      {/* Erros categorias */}
       {errorCategories && (
         <p className="text-red-600 mb-4">⚠️ {errorCategories}</p>
       )}
 
-      <div className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-6">
+      <div className="flex justify-center mb-6">
+        <h5 className="text-xl md:text-2xl font-bold text-center">Filtro de Produtos</h5>
+      </div>
+
+      {/* Filtros */}
+      <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-6">
         <Filters
           search={search}
           onSearchChange={setSearch}
@@ -118,12 +134,17 @@ export default function ProductsPage() {
         <SortSelect value={sort} onChange={handleSort} />
       </div>
 
+      {/* Erros produtos */}
       {errorProducts && (
         <p className="text-red-600 mb-4">⚠️ {errorProducts}</p>
       )}
 
-      <ProductTable products={products} loading={loading} />
+      {/* Tabela */}
+      <div className="overflow-x-auto">
+        <ProductTable products={products} loading={loading} />
+      </div>
 
+      {/* Paginação */}
       <div className="flex justify-center mt-6 gap-4">
         <button
           disabled={page === 1}
@@ -132,7 +153,7 @@ export default function ProductsPage() {
         >
           Anterior
         </button>
-        <span>Página {page}</span>
+        <span className="text-white">Página {page}</span>
         <button
           onClick={() => setPage(page + 1)}
           className="bg-gray-200 px-4 py-2 rounded text-black"
@@ -141,5 +162,20 @@ export default function ProductsPage() {
         </button>
       </div>
     </div>
-  )
+
+    {/* Footer */}
+    <footer className="border-t border-gray-700 text-center text-sm text-white bg-black
+      fixed bottom-0 left-0 w-full z-50 py-4
+      md:relative md:mt-10">
+      <a
+        href="/TesteFrontEnd.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block hover:underline"
+      >
+        Ver requisitos técnicos
+      </a>
+    </footer>
+  </>
+)
 }
