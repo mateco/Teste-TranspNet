@@ -57,16 +57,8 @@ export default function ProductsPage() {
         if (!res.ok) throw new Error('Erro ao carregar categorias.')
         const data = await res.json()
 
-const formatted: Category[] = (Array.isArray(data) ? data : [])
-  .filter((cat): cat is string => typeof cat === 'string')
-  .map((cat) => ({
-    slug: cat,
-    name: cat.charAt(0).toUpperCase() + cat.slice(1),
-    url: `/products/category/${cat}`,
-  }))
-
-
-        setCategories(formatted)
+        // A API já retorna a estrutura correta (slug, name, url)
+        setCategories(Array.isArray(data) ? data : [])
       } catch (error: any) {
         setErrorCategories(error.message || 'Erro inesperado ao buscar categorias.')
         setCategories([])
@@ -97,7 +89,7 @@ const formatted: Category[] = (Array.isArray(data) ? data : [])
   }
 
   return (
-<div className="flex flex-col">
+    <div className="flex flex-col">
       {errorCategories && <p className="text-red-600 mb-4">⚠️ {errorCategories}</p>}
 
       <div className="flex justify-center mb-6">
